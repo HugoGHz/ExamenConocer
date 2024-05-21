@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba</title>
+</head>
+
+<body>
+    <div id="text" class="text">
+        <h3>Estamos probando la creación de un PDF desde HTML usando JavaScript</h3>
+    </div>
+</body>
+<script>
+    //Preguntas con incisos
+    const exam = [
+        {
+            "question": "Es su deber el verificar las condiciones establecidas en el Estándar de competencia de manera previa a la aplicación del Instrumento de Evaluación de la Competencia:",
+            "answers": {
+                "a) El candidato": false,
+                "b) El evaluador": true,
+                "c) La entidad certificadora": false
+            }
+        },
+        {
+            "question": "¿Qué elementos debe de corroborar el evaluador?",
+            "answers": {
+                "a) Plan de evaluación acordado, instrucciones de aplicación, recursos necesarios": true,
+                "b) Periféricos de computación, materiales de oficina": false,
+                "c) Dispositivos del candidato": false
+            }
+        },
+        {
+            "question": "El evaluador debe de hacer explícitos los siguientes elementos: ",
+            "answers": {
+                "a)	Secuencia de actividades, roles de cada participante, reglas generales": true,
+                "b) Periféricos de computación, materiales de oficina ": false,
+                "c)	Respuestas, periféricos y credenciales": false
+            }
+        }
+    ];
+
+    function recorrerArrayDeArrays(list) {
+        // Recorre el array de arrays
+        for (let i = 0; i < list.length; i++) {
+            const subArray = list[i];
+
+            // Recorre cada subarray
+            for (let j = 0; j < subArray.length; j++) {
+                const valor = subArray[j];
+
+                // Imprime el valor
+                var a1 = document.createTextNode(valor);
+                var pans1 = document.createElement("p");
+                pans1.setAttribute("class", "answer");
+                pans1.appendChild(a1);
+                var element = document.getElementById("text");
+                element.appendChild(pans1);
+                console.log(valor);
+            }
+        }
+    }
+
+    function compararValoresArrayObjetosYArray(students, arrayDeArrays) {
+        // Recorre el array de objetos
+        for (let i = 0; i < arrayObjetos.length; i++) {
+            const objeto = arrayObjetos[i];
+
+            // Recorre cada subarray
+            for (let j = 0; j < arrayDeArrays.length; j++) {
+                const subArray = arrayDeArrays[j];
+
+                // Recorre cada valor del subarray
+                for (let k = 0; k < subArray.length; k++) {
+                    const valor = subArray[k];
+
+                    // Compara el valor con los atributos del objeto
+                    for (const key in objeto) {
+                        if (objeto.hasOwnProperty(key)) {
+                            const objetoValue = objeto[key];
+
+                            // Compara los valores
+                            if (valor === objetoValue) {
+                                console.log(`El valor "${valor}" coincide con el atributo "${key}" del objeto.`);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    recorrerArrayDeArrays(list);
+
+</script>
+
+</html>

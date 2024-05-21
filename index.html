@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertir HTML a PDF</title>
+    <!-- El script de la librería-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./scripts/createPDF.js"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+    <div class="buttons">
+        <div class="btnOne">
+            <p>Selecciona tu archivo de estudiantes</p>
+            <input type="file" id="JSFile">
+        </div>
+        <div class="btnTwo">
+            <p>Selecciona tu archivo de preguntas</p>
+            <input type="file" id="QuestionFile">
+        </div>
+        <div class="preDown">
+            <button onclick="viewPDF()" id="mostrarImg">Mostrar</button>
+            <button id="btnCrearPdf">Crear PDF</button>
+        </div>
+    </div>
+    <br>
+
+    <section class="sheet">
+        <div id="pdf" class="pdf">
+            <div id="imgtop" class="imgs">
+                <img src="./images/ARRIBA_03.png" width="90%" height="120">
+            </div>
+            <div class="clearfix"></div>
+            <div id="text" class="text">
+
+            </div>
+            <div id="imgbot" class="imgs">
+                <img src="./images/ABAJO_03.png" width="90%" height="60">
+            </div>
+        </div>
+    </section>
+</body>
+
+<script>
+    // Obtenemos referencias a los elementos HTML
+    var mostrarImg = document.getElementById('mostrarImg');
+    var imgtop = document.getElementById("imgtop");
+    var imgbot = document.getElementById("imgbot");
+
+    // Agregamos un evento click al botón
+    mostrarImg.addEventListener("click", function () {
+        // Cambiamos el atributo class para mostrar la imagen
+        imgtop.classList.add('active');
+        imgbot.classList.add('active');
+    });
+
+    async function viewPDF() {
+        //Obtener el elemento de entrada de archivo de los estudiantes
+        let fileInput = document.getElementById('JSFile');
+        let file = fileInput.files[0];
+        let result = await readFile(file);
+
+        //Obtener el elemento de entrada de archivo de las preguntas con sus respuestas
+        let questionInput = document.getElementById('QuestionFile');
+        let question = questionInput.files[0];
+        let questionResult = await readQuestions(question);
+
+        /*var imagen = document.getElementById("imagen");
+        imagen.setAttribute("alt", "una imagen")
+        imagen.setAttribute("display", "block");*/
+
+        //Bucle para cada estudiante
+        let total_questions = 8;
+        let students = result;
+        students.forEach(function (student, i) {
+            let total_answers = [];
+            let answers = [];
+            //Obtiene las respuestas que el estudiante respondio en el examen
+            for (let i = 1; i <= total_questions; i++) {
+                answers.push(student["Respuesta" + (i)]);
+            }
+            total_answers.push(answers);
+
+            let respuestas = [];
+            for (let i = 0; i < questionResult.length; i++) {
+                resp = Object.values(questionResult[i]["answers"]);
+
+                for (let j = 0; j < resp.length; j++) {
+                    if (resp[j] === true) {
+                        respuestas.push(Object.keys(questionResult[i]["answers"])[j]);
+                    }
+                }
+            }
+
+            /*let profileImage = document.createElement("img");
+            profileImage.src = "https://www.uaq.mx/informatica/img/big-nosotros.jpg";
+            profileImage.setAttribute("class", "imgs");
+            document.getElementById("text").appendChild(profileImage);*/
+
+            //Tabla de la información del estudiante
+            const contenedor = document.getElementById("text");
+            const tabla = document.createElement("table");
+            tabla.setAttribute("class", "table_stu");
+
+            //Fila
+            let tr = document.createElement("tr");
+            //Columna 1
+            let th = document.createElement("th");
+            let thText = document.createTextNode("Fecha:");
+            th.appendChild(thText);
+            tr.appendChild(th);
+            //Columna 2
+            th = document.createElement("td");
+            thText = document.createTextNode(student.Comenzado);
+            th.appendChild(thText);
+            tr.appendChild(th);
+            //Agregar contenido a la fila
+            tabla.appendChild(tr);
+
+            //Fila
+            tr = document.createElement("tr");
+            //Columna 1
+            td = document.createElement("th");
+            tdText = document.createTextNode("Entidad de Certificación y Evaluación:");
+            td.appendChild(tdText);
+            tr.appendChild(td);
+            //Columna 2
+            td = document.createElement("td");
+            tdText = document.createTextNode("ECE458-20 Universidad Autónoma de Querétaro");
+            td.appendChild(tdText);
+            tr.appendChild(td);
+            //Agregar contenido a la fila
+            tabla.appendChild(tr);
+
+            //Fila
+            tr = document.createElement("tr");
+            //Columna 1
+            td = document.createElement("th");
+            tdText = document.createTextNode("Nombre del candidato:");
+            td.appendChild(tdText);
+            tr.appendChild(td);
+            //Columna 2
+            td = document.createElement("td");
+            tdText = document.createTextNode(student.Apellidos + " " + student.Nombre);
+            td.appendChild(tdText);
+            tr.appendChild(td);
+            //Agregar contenido a la fila
+            tabla.appendChild(tr);
+
+            //Fila
+            tr = document.createElement("tr");
+            //Columna 1
+            td = document.createElement("th");
+            tdText = document.createTextNode("Estándar de compentencia:");
+            td.appendChild(tdText);
+            tr.appendChild(td);
+            //Columna 2
+            td = document.createElement("td");
+            tdText = document.createTextNode("EC-0076 Evaluación de la competencia de candidatos con base en Estándares de Competencia");
+            td.appendChild(tdText);
+            tr.appendChild(td);
+            //Agregar contenido a la fila
+            tabla.appendChild(tr);
+
+            //Fila
+            tr = document.createElement("tr");
+            //Columna 1
+            td = document.createElement("th");
+            tdText = document.createTextNode("Nombre del evaluador:");
+            td.appendChild(tdText);
+            tr.appendChild(td);
+            //Columna 2
+            td = document.createElement("td");
+            tdText = document.createTextNode("Bruno Pichardo Aguila");
+            td.appendChild(tdText);
+            tr.appendChild(td);
+            //Agregar contenido a la fila
+            tabla.appendChild(tr);
+
+            //Agregar contenido a la tabla
+            contenedor.appendChild(tabla);
+
+            var instruction = document.getElementById("text");
+            let note = document.createTextNode("Introducción: El objetivo del diagnóstico es identifica las posibilidades de éxito que se tiene para someterse a un proceso de evaluación en relación con los requerimientos señalados en el Estándar de Competencia.");
+            let notet = document.createElement("p");
+            notet.setAttribute("class", "instruction");
+            notet.appendChild(note);
+            instruction.appendChild(notet);
+
+
+            var element = document.getElementById("text");
+
+            for (let i = 0; i < total_questions; i++) {
+                //Pregunta
+                var firstq = document.createTextNode(questionResult[i]["question"]);
+                var pfirstq = document.createElement("p");
+                pfirstq.setAttribute("class", "question");
+                pfirstq.appendChild(firstq);
+                element.appendChild(pfirstq);
+
+                //Incisos
+                var stringAnswers = Object.keys(questionResult[i]["answers"]);
+                const chunkSize = 1;
+                const dividedArray = [];
+                for (let i = 0; i < stringAnswers.length; i += chunkSize) {
+                    const chunk = stringAnswers.slice(i, i + chunkSize);
+                    dividedArray.push(chunk);
+                };
+
+                for (let i = 0; i < dividedArray.length; i++) {
+                    var firstqa = document.createTextNode(dividedArray[i]);
+                    var pfirstqa = document.createElement("p");
+                    pfirstqa.setAttribute("class", "items");
+                    pfirstqa.appendChild(firstqa);
+                    element.appendChild(pfirstqa);
+                };
+
+                //Respuesta estudiante
+                var firstqr = document.createTextNode("Tu respuesta seleccionada fue: " + answers[i]);
+                var pfirstqr = document.createElement("p");
+                pfirstqr.setAttribute("class", "answers");
+                pfirstqr.appendChild(firstqr);
+                element.appendChild(pfirstqr);
+
+                //Respuesta correcta o incorrrecta
+                if (answers[i] === respuestas[i]) {
+                    var firstqc = document.createTextNode("¡Excelente! Tu respuesta fue correcta.");
+                    var pfirstqc = document.createElement("p");
+                    pfirstqc.setAttribute("class", "rightAnswer");
+                    pfirstqc.appendChild(firstqc);
+                    element.appendChild(pfirstqc);
+                } else {
+                    var firstqc = document.createTextNode("Tu respuesta fue incorrecta, la respuesta es : " + respuestas[i]);
+                    var pfirstqc = document.createElement("p");
+                    pfirstqc.setAttribute("class", "wrongAnswer");
+                    pfirstqc.appendChild(firstqc);
+                    element.appendChild(pfirstqc);
+                }
+            }
+        });
+    }
+
+    function readFile(file) {
+        return new Promise((resolve, reject) => {
+            //Se crea un FileReader
+            let lector = new FileReader();
+
+            lector.onload = function (evento) {
+                let content = evento.target.result;
+                result = JSON.parse(content);
+                resolve(result);
+            };
+
+            lector.onerror = function (evento) {
+                reject(new Error("Error"));
+            };
+
+            lector.readAsText(file);
+        })
+    }
+
+    function readQuestions(file) {
+        return new Promise((resolve, reject) => {
+            //Se crea un FileReader
+            let lector = new FileReader();
+
+            lector.onload = function (evento) {
+                let content = evento.target.result;
+                result = JSON.parse(content);
+                resolve(result);
+            };
+
+            lector.onerror = function (evento) {
+                reject(new Error("Error"));
+            };
+
+            lector.readAsText(file);
+        })
+    }
+</script>
+
+</html>

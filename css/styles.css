@@ -1,0 +1,150 @@
+body{
+    width: 816px;
+    height: 1056px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.clearfix{
+    float: none;
+    clear: both;
+}
+
+.buttons {
+    width: 816px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.buttons p {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.btnOne {
+    width: 250px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.btnOne button {
+    font-family: Arial, Helvetica, sans-serif;
+    height: 25px;
+}
+
+.btnTwo {
+    width: 250px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.btnTwo button {
+    font-family: Arial, Helvetica, sans-serif;
+    height: 25px;
+}
+
+.preDown {
+    width: 250px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.preDown button {
+    font-family: Arial, Helvetica, sans-serif;
+    height: 25px;
+}
+
+.sheet{
+    width: 816px;
+    height: 1056px;
+}
+
+.pdf{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-content: flex-start;
+    flex-direction: column;
+    float: left;
+}
+
+.imgs{
+    width: 90%;
+    padding-bottom: 20px;
+    margin: 0 auto;
+    display: none;
+}
+
+.imgs.active{
+    display: block;
+}
+
+.imgs img{
+    padding: 0px 40px 0px 30px;
+}
+
+.text{
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.table_stu{
+    border: 1;
+    margin: 0 auto;
+    width: 90%;
+    padding-bottom: 20px;
+}
+
+th{
+    border: double;
+    text-align: right;
+    width: 35%;
+}
+
+td{
+    border: double;
+}
+
+.student{
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+    color: black;
+}
+
+.question{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+    padding-left: 1.5em;
+}
+
+.items{
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 3em;
+}
+
+.answers{
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    color: orange;
+    padding-left: 1.5em;
+}
+
+.rightAnswer {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+    color: green;
+    padding-bottom: 15px;
+    padding-left: 1.5em;
+}
+
+.wrongAnswer {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+    color: red;
+    padding-bottom: 15px;
+    padding-left: 1.5em;
+}
